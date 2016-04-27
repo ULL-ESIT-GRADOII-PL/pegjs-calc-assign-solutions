@@ -11,7 +11,9 @@
 }
 
 start
-  = a:assign { console.log(util.inspect(symbolTable,{ depth: null})); return a; }
+  = statement (SEMICOL statement)* { console.log(util.inspect(symbolTable,{ depth: null})); return symbolTable; }
+
+statement = assign
 
 assign
   = id:ID ASSIGN a:additive {
@@ -58,4 +60,5 @@ RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
 ID = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { return id; }
 ASSIGN = _ '=' _
+SEMICOL = _ ';' _
 
