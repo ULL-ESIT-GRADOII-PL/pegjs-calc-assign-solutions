@@ -11,12 +11,13 @@
 }
 
 start
-  = assign { console.log(util.inspect(symbolTable,{ depth: null})); }
+  = a:assign { console.log(util.inspect(symbolTable,{ depth: null})); return a; }
 
 assign
   = id:ID ASSIGN a:additive {
-         symbolTable[id] = a;
+         symbolTable[id] = a; return a;
       }
+  / additive
 
 additive
   = left:multiplicative rest:(ADDOP multiplicative)* { 
@@ -37,7 +38,7 @@ multiplicative
 primary
   = integer
   / id:ID  { return symbolTable[id]; }
-  / LEFTPAR additive:additive RIGHTPAR { return additive; }
+  / LEFTPAR assign:assign RIGHTPAR { return assign; }
 
 /* A rule can also contain human-readable name that is used in error messages (in our example, only the integer rule has a human-readable name). */
 integer "integer"
