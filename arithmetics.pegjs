@@ -21,6 +21,7 @@ assign
 
 additive
   = left:multiplicative rest:(ADDOP multiplicative)* { 
+      return rest.reduce((prod, [op, num])=>{ return eval(prod+op+num); },left);
        let sum = left;
        rest.forEach( (x) => {
          eval(`sum ${x[0]}= ${x[1]}`);
@@ -55,6 +56,6 @@ DIV = _"/"_   { return '/'; }
 LEFTPAR = _"("_
 RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
-ID = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { console.log(id); return id; }
+ID = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { return id; }
 ASSIGN = _ '=' _
 
