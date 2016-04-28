@@ -11,16 +11,10 @@
 }
 
 start
-  = s1:statement &{ console.log(s1); return true; } 
-                 (SEMICOL s2:statement &{ console.log(s2); return true;})* { 
+  = s1:assign &{ console.log(s1); return true; } 
+                 (SEMICOL s2:assign &{ console.log(s2); return true;})* { 
         return symbolTable; 
       }
-
-statement 
-  = IF e:condition THEN st:statement ELSE sf:statement {
-       if (e) { return st } else { return sf }
-     }
-  / assign
 
 assign
   = id:ID ASSIGN a:condition {
