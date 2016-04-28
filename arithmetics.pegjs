@@ -11,9 +11,16 @@
 }
 
 start
-  = statement (SEMICOL statement)* { return symbolTable; }
+  = s1:statement &{ console.log(s1); return true; } 
+                 (SEMICOL s2:statement &{ console.log(s2); return true;})* { 
+        return symbolTable; 
+      }
 
-statement = assign
+statement 
+  = IF e:condition THEN st:statement ELSE sf:statement {
+       if (e) { return st } else { return sf }
+     }
+  / assign
 
 assign
   = id:ID ASSIGN a:condition {
@@ -51,8 +58,11 @@ primary
 integer "integer"
   = NUMBER
 
-_ = $[ \t\n\r]*
+_ "white spaces" = $[ \t\n\r]*
 
+IF = _ "if" _
+THEN = _ "then" _
+ELSE = _ "else" _
 COMP = _ comp:("=="/"!="/"<="/">="/"<"/">") _ { return comp; }
 ADDOP = PLUS / MINUS
 MULOP = MULT / DIV
@@ -63,7 +73,7 @@ DIV = _"/"_   { return '/'; }
 LEFTPAR = _"("_
 RIGHTPAR = _")"_
 NUMBER = _ digits:$[0-9]+ _ { return parseInt(digits, 10); }
-ID = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { return id; }
+ID "identifier" = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { return id; }
 ASSIGN = _ '=' _
 SEMICOL = _ ';' _
 
