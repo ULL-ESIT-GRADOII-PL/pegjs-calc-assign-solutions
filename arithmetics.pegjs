@@ -3,6 +3,7 @@
  * "2*(3+4)". The parser generated from this grammar then computes their value.
  */
 {
+  "use strict";
   var util = require('util');
   var symbolTable = {
     PI: Math.PI
