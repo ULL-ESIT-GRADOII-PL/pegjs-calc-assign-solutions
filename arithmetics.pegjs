@@ -11,14 +11,18 @@
 }
 
 start
-  = statement (SEMICOL statement)* { console.log(util.inspect(symbolTable,{ depth: null})); return symbolTable; }
+  = statement (SEMICOL statement)* { return symbolTable; }
 
 statement = assign
 
 assign
-  = id:ID ASSIGN a:additive {
+  = id:ID ASSIGN a:condition {
          symbolTable[id] = a; return a;
       }
+  / condition
+
+condition 
+  = a1:additive comp:COMP a2:additive { return eval(a1+comp+a2); }
   / additive
 
 additive
@@ -49,6 +53,7 @@ integer "integer"
 
 _ = $[ \t\n\r]*
 
+COMP = _ comp:("=="/"!="/"<="/">="/"<"/">") _ { return comp; }
 ADDOP = PLUS / MINUS
 MULOP = MULT / DIV
 PLUS = _"+"_  { return '+'; }
