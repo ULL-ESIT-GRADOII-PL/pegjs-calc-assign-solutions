@@ -1,3 +1,3 @@
 a = 4;
-b = 2*a;
-c = a+b
+if (a <= 4) then ale4 = 1 else ale4 = 0;
+if (a > 4) then agt4 = 1 else agt4 = 0

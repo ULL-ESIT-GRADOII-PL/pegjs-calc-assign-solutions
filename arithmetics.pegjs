@@ -11,10 +11,11 @@
 }
 
 start
-  = s1:assign &{ console.log(s1); return true; } 
-                 (SEMICOL s2:assign &{ console.log(s2); return true;})* { 
-        return symbolTable; 
-      }
+  = s1:statement (SEMICOL s2:statement)* { return symbolTable; }
+
+statement
+  = IF c:condition THEN ((&{ return c; } statement ELSE empty)/(empty ELSE statement))
+  / assign
 
 assign
   = id:ID ASSIGN a:condition {
@@ -71,3 +72,31 @@ ID "identifier" = _ id:$([a-z_]i$([a-z0-9_]i*)) _ { return id; }
 ASSIGN = _ '=' _
 SEMICOL = _ ';' _
 
+empty
+  = IF c:emptycondition THEN empty (ELSE empty)? {}
+  / emptyassign {}
+
+emptyassign
+  = id:ID ASSIGN a:emptycondition { }
+  / emptycondition {}
+
+emptycondition 
+  = a1:emptyadditive comp:COMP a2:emptyadditive { }
+  / emptyadditive {}
+
+emptyadditive
+  = left:emptymultiplicative rest:(ADDOP emptymultiplicative)* { }
+  / emptymultiplicative {}
+
+emptymultiplicative
+  = left:emptyprimary rest:(MULOP emptyprimary)* { }
+  / emptyprimary {}
+
+emptyprimary
+  = integer {}
+  / id:ID  { }
+  / LEFTPAR assign:emptyassign RIGHTPAR { }
+
+/* A rule can also contain human-readable name that is used in error messages (in our example, only the integer rule has a human-readable name). */
+integer "integer"
+  = NUMBER
