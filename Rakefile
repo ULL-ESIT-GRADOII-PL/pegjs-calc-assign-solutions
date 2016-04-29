@@ -1,5 +1,5 @@
 PEGJS = "pegjs"
-task :default => :run
+task :default => :exe
 
 desc "Compile arithmetics.pegjs"
 task :compile do
@@ -8,7 +8,7 @@ end
 
 desc "Run and use the parser generated from arithmetics.pegjs"
 task :exe => :compile do
-  sh "node --harmony_destructuring main.js"
+  sh "node --harmony_destructuring main.js '(b = (a=4)*a)+2'"
 end
 
 desc "Run and use the parser generated from arithmetics.pegjs"
