@@ -1,3 +1,4 @@
+#!/usr/local/bin/node --harmony_destructuring
 var PEG = require("./arithmetics.js");
 var input = process.argv[2] || "5+3*2";
 console.log(`Processing <${input}>`);
