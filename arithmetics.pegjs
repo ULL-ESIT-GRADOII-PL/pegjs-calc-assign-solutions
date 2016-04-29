@@ -12,7 +12,7 @@
 }
 
 start
-  = a:assign { console.log(util.inspect(symbolTable,{ depth: null})); return a; }
+  = a:assign { return symbolTable }
 
 assign
   = id:ID ASSIGN a:additive {
