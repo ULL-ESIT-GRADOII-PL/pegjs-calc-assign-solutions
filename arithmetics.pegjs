@@ -97,6 +97,3 @@ emptyprimary
   / id:ID  { }
   / LEFTPAR assign:emptyassign RIGHTPAR { }
 
-/* A rule can also contain human-readable name that is used in error messages (in our example, only the integer rule has a human-readable name). */
-integer "integer"
-  = NUMBER
